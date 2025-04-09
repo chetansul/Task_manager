@@ -1,3 +1,4 @@
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -172,3 +173,25 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+# Ignore virtual environment
+env/
+.venv/
+
+#Environment/config files
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# SQLite files (in case you experiment locally)
+*.sqlite3
+
+# Log files
+*.log
+
+# MySQL dumps/backups (if you generate them)
+*.sql
+*.bak
+*.dump
