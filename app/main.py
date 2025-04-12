@@ -1,7 +1,5 @@
 from fastapi import FastAPI
+from app.routes import tasks
 
 app=FastAPI()
-
-@app.get("/")
-def home():
-    return {"message" : "hey chetan , created successfully"}
+app.include_router(tasks.router)
