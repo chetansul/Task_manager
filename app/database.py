@@ -4,8 +4,6 @@ from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 import os
 
-load_dotenv() 
-
 SQLALCHEMY_DATABASE_URL="mysql+mysqlconnector://root:root@localhost:3306/Task_manager"
 
 engine=create_engine(SQLALCHEMY_DATABASE_URL)

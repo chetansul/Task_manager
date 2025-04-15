@@ -1,5 +1,5 @@
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 # Schema for creating or updating a task
 class TaskCreate(BaseModel):
@@ -8,6 +8,8 @@ class TaskCreate(BaseModel):
 
 class Taskcreateresponse(BaseModel):
     message:str
+
+
     
 # Schema for returning a task (including its ID)
 class TaskResponse(TaskCreate):
@@ -19,3 +21,24 @@ class TaskResponse(TaskCreate):
 class Tasklistresponse(BaseModel):
     message :str
     data : List[TaskResponse]
+
+class Task_response(BaseModel):
+    id: str
+    name: str
+    description: Optional[str] = None
+
+class Createreponse(BaseModel):
+    message: str
+    data: List[Task_response]
+
+class Tasklist(BaseModel):
+    message: str
+    data: List[Task_response]
+
+class TaskbyID(BaseModel):
+    message: str
+    data: Task_response
+
+class Taskupdateresponse(BaseModel):
+    message:str
+    data : Task_response

@@ -1,8 +1,8 @@
-from pydantic import BaseModel
-from typing import Optional,List
+
 from uuid import UUID
 from app.database import Base
-from sqlalchemy import Column,String
+from sqlalchemy import Column,String,Boolean,DateTime
+from sqlalchemy.sql import func
 
 
 
@@ -12,26 +12,12 @@ class Task(Base):
     id = Column(String(60),primary_key=True,index=True)
     name=Column(String(50))
     description = Column(String(255))
+    completed = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
 
 
 
 
-class Task_response(BaseModel):
-    id: str
-    name: str
-    description: Optional[str] = None
-
-class Createreponse(BaseModel):
-    message: str
-    data: List[Task_response]
-
-class Tasklist(BaseModel):
-    message: str
-    data: List[Task_response]
-
-class TaskbyID(BaseModel):
-    message: str
-    data: Task_response
 
