@@ -88,9 +88,38 @@ python -m app.create_tables
 **Important Note:**
 - The `GET /tasks` route must return a **list of tasks**, not a dict. Wrap additional metadata like messages outside of the endpoint's `response_model`.
 
-```python
+
 # ❌ This will break response_model = list[TaskResponse]
 return { "message": "Fetched", "data": task_list }
 
 # ✅ This works with response_model = list[TaskResponse]
 return task_list
+
+### 📅 Day 6 – Task Enhancements and Query Features
+
+#### ✅ What I Did:
+- Added `completed` (boolean) field to track task status
+- Added `created_at` (timestamp) field to record when task was created
+- Updated database schema (with `drop_all` and `create_all`) for changes
+- Modified Pydantic models to include new fields
+- Created endpoint to **filter tasks by status**
+- Created endpoint to **sort tasks by creation date**
+- Created **PATCH endpoint** to update task status only
+- Improved modular and clean error handling using custom exception class
+
+#### 📚 Key Concepts Learned:
+| Concept                | Purpose                                       |
+|------------------------|-----------------------------------------------|
+| `Boolean` & `DateTime` | Add logic and metadata to tasks               |
+| `func.now()`           | Auto-generate timestamps on DB insert         |
+| `PATCH` HTTP Method    | Update partial fields instead of full object  |
+| Filtering with queries | `/tasks/filter?completed=true`                |
+| Sorting                | `/tasks/sorted?desc=true`                     |
+| Custom Exception       | Centralize common error messages              |
+
+#### ⚠️ Important Notes:
+- `Base.metadata.drop_all()` was used to reset the DB (for development only!)
+- `.env` file hides database credentials and should be excluded via `.gitignore`
+- Run table creation with:
+  ```bash
+  python -m app.create_tables
