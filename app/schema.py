@@ -1,10 +1,13 @@
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
 
 # Schema for creating or updating a task
 class TaskCreate(BaseModel):
     name: str
     description: str
+    completed : int
+    created_at : datetime
 
 class Taskcreateresponse(BaseModel):
     message:str
@@ -20,7 +23,7 @@ class TaskResponse(TaskCreate):
 
 class Tasklistresponse(BaseModel):
     message :str
-    data : List[TaskResponse]
+    data : list[TaskResponse]
 
 class Task_response(BaseModel):
     id: str

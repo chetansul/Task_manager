@@ -87,10 +87,10 @@ def Bulk_create(tasks : List[TaskCreate],db :Session =Depends(get_db)):
     return{ "message":"all tasks fetched",
            "data":task_db }
 
-@router.put("update/status/{id}", response_model=Taskupdateresponse,status_code=status.HTTP_200_OK)
+@router.patch("/update/status/{id}", response_model=Taskupdateresponse,status_code=status.HTTP_200_OK)
 def update_status(id : str , db :Session =Depends(get_db) ):
-    task =db.query(Task).filter(Task.id==id).first()
-    print(task)
+    task = db.query(Task).filter(Task.id == id).first()
+    
     if not task:
         raise TaskNotFoundExpection
     
@@ -100,3 +100,19 @@ def update_status(id : str , db :Session =Depends(get_db) ):
         db.refresh(task)
     
     return {"message" : "status updated successfully", "data":task}
+
+@router.get("/completedtasks/",response_model=Tasklistresponse)
+def get_completed_tasks(db: Session =Depends(get_db)):
+    db_tasks=db.query(Task).filter(Task.completed == 1)
+
+    return {"message" : "All completed tasks","data":db_tasks}
+
+@router.post("/tasks/sorted", response_model=Tasklistresponse)
+def get_sorted_tasks(desc: bool = False, db: Session = Depends(get_db)):
+    order = Task.created_at.desc() if desc else Task.created_at.asc()
+    tasks = db.query(Task).order_by(order).all()
+    print(tasks)
+    return {
+        "message": "tasks sorted list",
+        "data": tasks
+    }
