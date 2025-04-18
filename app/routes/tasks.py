@@ -1,10 +1,12 @@
 from fastapi import APIRouter,HTTPException,Depends,status
 from typing import List
-from app.models import Task
-from uuid import UUID,uuid4
-from app.schema import *
-from app.database import SessionLocal
 from sqlalchemy.orm import Session
+from uuid import UUID,uuid4
+
+from app.schema.taskschema import *
+from app.schema.userschema import *
+from app.models import Task,User
+from app.database import SessionLocal
 from app.exception import TaskNotFoundExpection
 
 router=APIRouter()
@@ -27,13 +29,13 @@ def create_task(task : TaskCreate, db :Session =Depends(get_db)):
     db.refresh(db_task)
     return {"message" : "hey chetan , created successfully"}
 
-@router.get("/tasks", response_model=Tasklistresponse ,status_code=status.HTTP_200_OK)
+@router.get("/", response_model=Tasklistresponse ,status_code=status.HTTP_200_OK)
 def get_all_tasks(db :Session =Depends(get_db)):
     tasks_db=db.query(Task).all()
     return{ "message":"all tasks fetched",
            "data": tasks_db}
 
-@router.get("/tasks/{task_id}", response_model=TaskbyID ,status_code=status.HTTP_200_OK)
+@router.get("/{task_id}", response_model=TaskbyID ,status_code=status.HTTP_200_OK)
 def get_task_by_id(task_id :str , db :Session =Depends(get_db)):
     tasks_db=db.query(Task).all()
 
@@ -107,7 +109,7 @@ def get_completed_tasks(db: Session =Depends(get_db)):
 
     return {"message" : "All completed tasks","data":db_tasks}
 
-@router.post("/tasks/sorted", response_model=Tasklistresponse)
+@router.post("/sorted", response_model=Tasklistresponse)
 def get_sorted_tasks(desc: bool = False, db: Session = Depends(get_db)):
     order = Task.created_at.desc() if desc else Task.created_at.asc()
     tasks = db.query(Task).order_by(order).all()
