@@ -88,10 +88,9 @@ python -m app.create_tables
 **Important Note:**
 - The `GET /tasks` route must return a **list of tasks**, not a dict. Wrap additional metadata like messages outside of the endpoint's `response_model`.
 
-```python
+
 # ❌ This will break response_model = list[TaskResponse]
 return { "message": "Fetched", "data": task_list }
 
 # ✅ This works with response_model = list[TaskResponse]
 return task_list
-
